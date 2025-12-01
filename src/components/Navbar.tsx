@@ -8,11 +8,22 @@ import { LuHeart } from "react-icons/lu";
 import { FiShoppingBag } from "react-icons/fi";
 import { CiMenuBurger } from "react-icons/ci";
 import { ModeToggle } from './ModeToggle';
-import { useTheme } from 'next-themes';
+import { usePathname } from 'next/navigation';
+
+
+import {
+  ClerkProvider,
+  SignInButton,
+  SignUpButton,
+  SignedIn,
+  SignedOut,
+  UserButton,
+} from '@clerk/nextjs'
+
 
 export default function Navbar() {
-
-    const theme=useTheme()
+    
+    const path=usePathname()
 
     const links=[
         {
@@ -46,7 +57,7 @@ export default function Navbar() {
 
   return (
     <>
-        <div className={`  h-[70px] px-4 lg:px-14 flex transition duration-300 ease-in-out fixed z-50 ${scrolled? ' w-[60%]  top-6 left-1/2 -translate-x-1/2 bg-white/20 backdrop-blur-xl shadow-xl border border-white/20 rounded-ful rounded-full ring ring-gray-400':'w-full bg-white'}  backdrop-blur-md  items-center justify-between `}>
+        <div className={`dark:text-black  h-[70px] px-4 lg:px-14 flex transition duration-300 ease-in-out fixed z-50 ${scrolled? ' w-[60%]  dark:text-white  top-6 left-1/2 -translate-x-1/2 bg-white/20 backdrop-blur-xl shadow-xl border border-white/20 rounded-ful rounded-full ring ring-gray-400':'w-full bg-white'}  backdrop-blur-md  items-center justify-between `}>
              
            <div className='flex items-center gap-3'>
                 <div className=' lg:hidden'>
@@ -57,7 +68,7 @@ export default function Navbar() {
             </div>
             <div className='hidden lg:flex gap-8 text-xl'>
                 {
-                    links.map(link=>(<Link key={link.name} href={link.href}>{link.name}</Link>))
+                    links.map(link=>(<Link className={`${path==link.href ? 'text-amber-600 font-bold':''}`}  key={link.name} href={link.href}>{link.name}</Link>))
                 }
             </div>
 
@@ -75,6 +86,19 @@ export default function Navbar() {
                  <span className='  absolute  right-[7px] lg:right-[45px] top-8 lg:top-6 w-[21px] h-[19px] text-lg flex items-center justify-center flex-1 rounded-full bg-red-500 text-white'>1</span>
                </div>
            </div>
+
+            <SignedOut>
+                <SignInButton />
+                    {/* <SignUpButton> */}
+                        <button className="bg-amber-600 text-ceramic-white rounded-full font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 cursor-pointer">
+                        Sign Up
+                        </button>
+                    {/* </SignUpButton> */}
+            </SignedOut>
+            
+            <SignedIn>
+              <UserButton />
+            </SignedIn>
            
         </div>
 
